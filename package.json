@@ -1,0 +1,30 @@
+{
+    "name": "antd-message-vue",
+    "private": false,
+    "version": "0.0.9",
+    "type": "module",
+    "main": "src/packages/index.ts",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc -b && vite build",
+        "preview": "vite preview"
+    },
+    "keywords": [
+        "antd-message",
+        "message-alert",
+        "alert",
+        "message"
+    ],
+    "license": "ISC",
+    "author": "Ryonnoski",
+    "dependencies": {
+        "antd-message-vue": "^0.1.1",
+        "vue": "^3.4.31"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^5.0.5",
+        "typescript": "^5.2.2",
+        "vite": "^5.3.4",
+        "vue-tsc": "^2.0.24"
+    }
+}
