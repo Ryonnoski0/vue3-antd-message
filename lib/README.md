@@ -1,6 +1,6 @@
 # antd-message-vue
 
-`antd-message-vue` 是一个 Vue 插件，模仿了antd的message组件，提供了全局消息通知功能，支持成功、警告、错误、加载和信息消息类型。它允许你在应用中方便地显示各种类型的消息，并可以自定义消息的显示时间和回调函数。
+`antd-message-vue` 是一个 Vue 插件，模仿了 antd 的 message 组件，提供了全局消息通知功能，支持成功、警告、错误、加载和信息消息类型。它允许你在应用中方便地显示各种类型的消息，并可以自定义消息的显示时间和回调函数。
 
 ## 安装
 
@@ -20,17 +20,17 @@ yarn add antd-message-vue
 
 ### 在 Vue 应用中注册插件
 
-在你的 Vue 应用的入口文件（如 `main.ts` 或 `main.js`）中，注册插件：
+在你的 Vue 应用的入口文件（如 `main.ts` 或 `main.js`）中，注册插件并导入 css：
 
 ```ts
-import { createApp } from 'vue';
-import App from './App.vue';
-import messagePlugin from 'antd-message-vue';
+import { createApp } from "vue";
+import App from "./App.vue";
+import messagePlugin from "antd-message-vue";
 import "antd-message-vue/style.css";
 
 const app = createApp(App);
 app.use(messagePlugin);
-app.mount('#app');
+app.mount("#app");
 ```
 
 ### 直接使用 Message 类
@@ -38,12 +38,12 @@ app.mount('#app');
 你也可以直接导入 `Message` 类并调用它的方法：
 
 ```ts
-import { Message } from 'antd-message-vue';
+import { Message } from "antd-message-vue";
 import "antd-message-vue/style.css";
 
-Message.success('This is a success message!');
-Message.error('This is an error message!', 5000, () => {
-  console.log('Error message closed');
+Message.success("This is a success message!");
+Message.error("This is an error message!", 5000, () => {
+    console.log("Error message closed");
 });
 ```
 
@@ -77,13 +77,14 @@ Message.error('This is an error message!', 5000, () => {
 
 `plugin` 对象包含一个 `install` 方法，用于将插件安装到 Vue 应用中：
 
-- **`install(app: App): void`**
+-   **`install(app: App): void`**
 
-  将插件安装到 Vue 应用中。
+    将插件安装到 Vue 应用中。
 
 ## 贡献
 
 欢迎提交 issue 和 pull request。如果你有任何问题或建议，请在 GitHub 上报告。
+[github仓库](https://github.com/Ryonnoski0/vue3-antd-message)
 
 ## 许可证
 
