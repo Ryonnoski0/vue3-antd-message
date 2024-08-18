@@ -4,6 +4,9 @@ import vue from "@vitejs/plugin-vue";
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [vue()],
+    server: {
+        port: 7890, // 这里修改为你想要的端口号
+    },
     build: {
         outDir: "lib", //输出文件名称
         lib: {

@@ -1,14 +1,23 @@
 <template>
-    <div :class="['message-item', cls, { 'fade-out': isFadingOut }]">
-        <i
-            class="anticon"
-            v-html="iconHtml"></i>
-        <p class="message-custom-content">{{ content }}</p>
+    <div
+        :class="['message-item', cls, { 'fade-out': isFadingOut }]"
+        @animationend="handleAnimationEnd">
+        <div
+            :style="{
+                backgroundColor: props.themeColor,
+                color: props.fontColor,
+            }"
+            class="message-content">
+            <span
+                class="anticon"
+                v-html="iconHtml"></span>
+            <span class="message-custom-content">{{ props.content }}</span>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { computed, ref, onMounted } from "vue";
+    import { computed, ref, onMounted, watch } from "vue";
     import { messageType } from "./interface";
     import { getSvgIcon } from "./icon";
 
@@ -16,13 +25,15 @@
         type: messageType;
         content: string;
         timeout: number;
+        themeColor: string;
+        fontColor: string;
+        onRemove: () => void;
+        isFadingOut: boolean;
     }>();
 
-    const cls = computed(() => [props.type]);
-
+    const cls = computed(() => props.type);
     const iconHtml = computed(() => getSvgIcon(props.type));
-
-    const isFadingOut = ref(false);
+    const isFadingOut = ref(props.isFadingOut);
 
     onMounted(() => {
         if (props.timeout > 0) {
@@ -31,17 +42,34 @@
             }, props.timeout);
         }
     });
+
+    watch(
+        () => props.isFadingOut,
+        (newValue) => {
+            if (newValue) {
+                isFadingOut.value = true;
+            }
+        },
+    );
+
+    const handleAnimationEnd = (event: AnimationEvent) => {
+        if (event.animationName.includes("fadeOut")) {
+            props.onRemove();
+        }
+    };
 </script>
 
 <style scoped>
-    @keyframes message {
+    @keyframes messageIn {
         0% {
-            transform: translateY(-100%);
             opacity: 0;
+            padding: 0;
+            transform: translateY(-100%);
         }
         100% {
-            transform: translateY(0);
             opacity: 1;
+            padding: 6px;
+            transform: translateY(0);
         }
     }
 
@@ -49,45 +77,52 @@
         0% {
             opacity: 1;
             max-height: 34px;
+            padding: 6px;
             transform: translateY(0);
         }
         100% {
             opacity: 0;
-            max-height: 0px;
+            padding: 0;
+            max-height: 0;
             transform: translateY(-100%);
         }
     }
-
-    .message-item {
-        max-height: 34px;
-        width: 100%;
-        max-width: 400px;
-        background-color: #fff;
-        border-radius: 8px;
-        padding: 0 8px;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08),
-            0 3px 6px -4px rgba(0, 0, 0, 0.12),
-            0 9px 28px 8px rgba(0, 0, 0, 0.05);
-        animation-name: message;
-        animation-duration: 0.5s;
-        animation-fill-mode: forwards;
-    }
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
+    @keyframes loadingCircle {
         100% {
             transform: rotate(360deg);
         }
     }
 
+    .message-item {
+        padding: 6px;
+        text-align: center;
+        animation: messageIn 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86) forwards;
+    }
+
+    .message-content {
+        display: inline-block;
+        padding: 9px 12px;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+        pointer-events: all;
+    }
+
     .anticon {
-        font-size: 15px;
-        line-height: 15px;
-        margin-right: 8px;
+        vertical-align: text-bottom;
+        margin-inline-end: 8px;
+        font-size: 16px;
+        display: inline-flex;
+        align-items: center;
+        color: inherit;
+        font-style: normal;
+        line-height: 0;
+        text-align: center;
+        text-transform: none;
+        vertical-align: -0.125em;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     .message-custom-content {
@@ -97,26 +132,10 @@
         line-height: 14px;
     }
 
-    .success .anticon {
-        color: #87d068;
-    }
-
-    .warning .anticon {
-        color: #ffa500;
-    }
-
-    .error .anticon {
-        color: rgb(255, 51, 0);
-    }
-    .loading .anticon,
-    .info .anticon {
-        color: #1890ff;
-    }
-    .loading .anticon {
-        animation: spin 1.5s linear infinite;
-    }
-
     .fade-out {
         animation: fadeOut 0.5s forwards;
+    }
+    .loading .anticon {
+        animation: loadingCircle 1s infinite linear;
     }
 </style>

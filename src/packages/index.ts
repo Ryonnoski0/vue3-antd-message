@@ -1,10 +1,10 @@
 import { App } from "vue";
 import Message from "./components/message/message";
+import type { ThemeOptions, MessageOptions } from "./components/message/message";
 
-const message = {
-    install(app: App) {
-        app.config.globalProperties.$message = Message;
-    },
+const install = (app: App) => {
+    app.config.globalProperties.$message = Message;
 };
-export default message;
-export { Message };
+
+export { install, Message };
+export type { ThemeOptions, MessageOptions };

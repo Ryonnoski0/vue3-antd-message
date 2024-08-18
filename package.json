@@ -1,7 +1,7 @@
 {
     "name": "antd-message-vue",
     "private": false,
-    "version": "0.0.9",
+    "version": "1.0.0",
     "type": "module",
     "main": "src/packages/index.ts",
     "scripts": {

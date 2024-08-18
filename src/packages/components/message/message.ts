@@ -1,64 +1,115 @@
-import { createApp, h } from "vue";
+import { createApp, h, ref } from "vue";
 import GlobalMessage from "./GlobalMessage.vue";
-import { messageType } from "./interface.ts";
+import { messageType } from "./interface";
+
+interface ThemeOptions {
+    themeColor?: string;
+    fontColor?: string;
+}
+
+interface MessageOptions extends ThemeOptions {
+    timeout?: number;
+    callBack?: () => void;
+}
+
+const containerStyles = {
+    boxSizing: "border-box",
+    margin: "0",
+    padding: "0",
+    color: "rgba(0, 0, 0, 0.88)",
+    fontSize: "14px",
+    lineHeight: "1.5714285714285714",
+    listStyle: "none",
+    position: "fixed",
+    top: "0",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "100%",
+    pointerEvents: "none",
+    zIndex: "1010",
+};
 
 class Message {
     private static container: HTMLElement | null = null;
+    private static globalThemeColor: string = "#fff"; // 默认的全局主题颜色
+    private static globalFontColor: string = "#000"; // 默认的全局字体颜色
 
-    static success(content: string, timeout?: number, callBack?: () => void) {
-        return this.message("success", content, timeout, callBack);
+    // 设置全局主题颜色
+    static setGlobalTheme(options: ThemeOptions = {}) {
+        if (options.themeColor) {
+            this.globalThemeColor = options.themeColor;
+        }
+        if (options.fontColor) {
+            this.globalFontColor = options.fontColor;
+        }
     }
 
-    static warn(content: string, timeout?: number, callBack?: () => void) {
-        return this.message("warning", content, timeout, callBack);
+    static success(content: string, options: MessageOptions = {}) {
+        return this.showMessage("success", content, options);
     }
 
-    static error(content: string, timeout?: number, callBack?: () => void) {
-        return this.message("error", content, timeout, callBack);
+    static warn(content: string, options: MessageOptions = {}) {
+        return this.showMessage("warning", content, options);
     }
 
-    static loading(content: string, timeout?: number, callBack?: () => void) {
-        return this.message("loading", content, timeout, callBack);
+    static error(content: string, options: MessageOptions = {}) {
+        return this.showMessage("error", content, options);
     }
 
-    static info(content: string, timeout?: number, callBack?: () => void) {
-        return this.message("info", content, timeout, callBack);
+    static loading(content: string, options: MessageOptions = {}) {
+        return this.showMessage("loading", content, options);
     }
 
-    private static message(
-        type: messageType,
-        content: string,
-        timeout: number = 3000,
-        callBack?: () => void
-    ): () => void {
-        // Create or get the container
+    static info(content: string, options: MessageOptions = {}) {
+        return this.showMessage("info", content, options);
+    }
+
+    private static showMessage(type: messageType, content: string, options: MessageOptions): () => void {
+        const { timeout = 3000, callBack, themeColor, fontColor } = options;
+        const finalThemeColor = themeColor || this.globalThemeColor;
+        const finalFontColor = fontColor || this.globalFontColor;
+
         if (!this.container) {
             this.createContainer();
         }
 
-        // Create a new container for the message
         const messageElement = document.createElement("div");
         messageElement.className = "message-item";
-        messageElement.style.transition = "all 1s";
-
-        // Add the message to the container
         this.container?.appendChild(messageElement);
 
-        // Create and mount the Vue app
+        const isFadingOut = ref(false);
+
         const app = createApp({
-            render() {
-                return h(GlobalMessage, { type, content, timeout });
-            },
+            render: () =>
+                h(GlobalMessage, {
+                    type,
+                    content,
+                    timeout,
+                    themeColor: finalThemeColor,
+                    fontColor: finalFontColor,
+                    isFadingOut: isFadingOut.value,
+                    onRemove: () => this.handleRemove(messageElement, callBack),
+                }),
         });
 
         app.mount(messageElement);
 
-        let closeTimeout: number | undefined;
-
         const close = () => {
-            clearTimeout(closeTimeout);
-            app.unmount();
+            isFadingOut.value = true;
+        };
+
+        if (timeout > 0) {
+            setTimeout(close, timeout);
+        }
+
+        return close;
+    }
+
+    private static handleRemove(messageElement: HTMLElement, callBack?: () => void) {
+        console.log("进入删除方法");
+        setTimeout(() => {
             messageElement.remove();
+
             if (this.container?.childElementCount === 0) {
                 this.container.remove();
                 this.container = null;
@@ -66,34 +117,15 @@ class Message {
             if (callBack) {
                 callBack();
             }
-        };
-
-        if (timeout > 0) {
-            closeTimeout = setTimeout(() => {
-                setTimeout(() => {
-                    close();
-                }, 500);
-            }, timeout);
-        }
-
-        return close;
+        }, 500);
     }
 
     private static createContainer() {
         this.container = document.createElement("div");
-        this.container.className = "message-container";
-        this.container.style.position = "fixed";
-        this.container.style.top = "20px";
-        this.container.style.left = "50%";
-        this.container.style.transform = "translateX(-50%)";
-        this.container.style.zIndex = "9999";
-        this.container.style.width = "100%";
-        this.container.style.display = "flex";
-        this.container.style.flexDirection = "column";
-        this.container.style.alignItems = "center";
-        this.container.style.pointerEvents = "none";
+        Object.assign(this.container.style, containerStyles);
         document.body.appendChild(this.container);
     }
 }
 
 export default Message;
+export type { ThemeOptions, MessageOptions };

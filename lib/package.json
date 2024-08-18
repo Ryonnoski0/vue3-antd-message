@@ -1,8 +1,9 @@
 {
     "name": "antd-message-vue",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "description": "antd-message",
-    "main": "./antd-message-vue.js",
+    "main": "lib/antd-message-vue.umd.cjs",
+    "module": "lib/antd-message-vue.js",
     "types": "./index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
