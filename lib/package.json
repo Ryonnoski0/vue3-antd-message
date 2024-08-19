@@ -1,20 +1,35 @@
 {
     "name": "antd-message-vue",
-    "version": "1.0.0",
-    "description": "antd-message",
-    "main": "lib/antd-message-vue.umd.cjs",
-    "module": "lib/antd-message-vue.js",
-    "types": "./index.d.ts",
+    "version": "1.0.1",
+    "description": "A Vue component for displaying messages with Ant Design style.",
+    "main": "antd-message-vue.umd.cjs",
+    "module": "antd-message-vue.js",
+    "types": "index.d.ts",
+    "style": "style.css",
+    "files": [
+        "antd-message-vue.js",
+        "antd-message-vue.umd.cjs",
+        "index.d.ts",
+        "style.css"
+    ],
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "vue-tsc -b && vite build"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
-        "antd-message",
+        "antd",
         "message",
-        "message-vue",
-        "antd-message-vue"
+        "vue",
+        "component",
+        "notification"
     ],
     "author": "Ryonnoski",
-    "license": "ISC"
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Ryonnoski0/vue3-antd-message.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Ryonnoski0/vue3-antd-message/issues"
+    },
+    "homepage": "https://github.com/Ryonnoski0/vue3-antd-message"
 }

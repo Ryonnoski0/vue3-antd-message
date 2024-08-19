@@ -74,27 +74,27 @@ Message.success("This is a success message with global theme!");
 
 -   `setGlobalTheme(options: ThemeOptions): void`
 
-    设置全局的主题颜色和字体颜色。`options` 是一个包含 `themeColor` 和 `fontColor` 的对象。
+    设置全局的主题颜色和字体颜色。 `options` 是一个包含 `themeColor` 和 `fontColor` 的对象。
 
 -   `success(content: string, options?: MessageOptions): () => void`
 
-    显示成功消息。`options` 是可选参数，用于设置消息显示的时间、回调函数、主题颜色和字体颜色。
+    显示成功消息。 `options` 是可选参数，用于设置消息显示的时间、回调函数、主题颜色和字体颜色。
 
 -   `warn(content: string, options?: MessageOptions): () => void`
 
-    显示警告消息。`options` 参数与 `success` 方法相同。
+    显示警告消息。 `options` 参数与 `success` 方法相同。
 
 -   `error(content: string, options?: MessageOptions): () => void`
 
-    显示错误消息。`options` 参数与 `success` 方法相同。
+    显示错误消息。 `options` 参数与 `success` 方法相同。
 
 -   `loading(content: string, options?: MessageOptions): () => void`
 
-    显示加载消息。`options` 参数与 `success` 方法相同。
+    显示加载消息。 `options` 参数与 `success` 方法相同。
 
 -   `info(content: string, options?: MessageOptions): () => void`
 
-    显示信息消息。`options` 参数与 `success` 方法相同。
+    显示信息消息。 `options` 参数与 `success` 方法相同。
 
 ### `install`
 

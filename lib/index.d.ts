@@ -1,5 +1,7 @@
 // index.d.ts
 
+import { App } from "vue";
+
 // 全局主题选项接口
 export interface ThemeOptions {
     themeColor?: string;
@@ -13,8 +15,9 @@ export interface MessageOptions extends ThemeOptions {
 }
 
 // 消息类型
-export type messageType = "success" | "warning" | "error" | "loading" | "info";
-export default class Message {
+export type MessageType = "success" | "warning" | "error" | "loading" | "info";
+
+export declare class Message {
     // 设置全局主题颜色
     static setGlobalTheme(options?: ThemeOptions): void;
 
@@ -25,8 +28,18 @@ export default class Message {
     static loading(content: string, options?: MessageOptions): () => void;
     static info(content: string, options?: MessageOptions): () => void;
 
-    // 私有方法不需要在 d.ts 文件中声明，但这里为了完整性和参考，也包括在内
-    private static showMessage(type: messageType, content: string, options: MessageOptions): () => void;
+    // 私有方法不需要在 d.ts 文件中声明，但这里为了完整性也包括在内
+    private static showMessage(type: MessageType, content: string, options: MessageOptions): () => void;
     private static handleRemove(messageElement: HTMLElement, callBack?: () => void): void;
     private static createContainer(): void;
+
+    // 容器属性和默认全局主题
+    private static container: HTMLElement | null;
+    private static globalThemeColor: string;
+    private static globalFontColor: string;
 }
+
+// 安装函数，用于在 Vue 应用中全局注册 $message
+export declare const install: (app: App) => void;
+
+export default Message;

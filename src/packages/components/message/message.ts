@@ -106,7 +106,6 @@ class Message {
     }
 
     private static handleRemove(messageElement: HTMLElement, callBack?: () => void) {
-        console.log("进入删除方法");
         setTimeout(() => {
             messageElement.remove();
 
